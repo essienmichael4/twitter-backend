@@ -3,11 +3,28 @@ import {PrismaClient} from '@prisma/client'
 const prisma = new PrismaClient();
 
 export const allUsers = () => {
-    return prisma.user.findMany()
+    return prisma.user.findMany({select: {
+        id: true,
+        name: true,
+        username: true,
+        bio: true,
+        image: true
+    }})
 }
 
 export const findUser = (id:string) => {
-    return prisma.user.findUnique({ where : { id: Number(id) } })
+    return prisma.user.findUnique({ 
+        where : { id: Number(id) }, 
+        include: {
+            tweets:{
+                select: {
+                    content: true,
+                    image: true,
+                    impressions: true
+                }
+            }
+        } 
+    })
 }
 
 export const createUser = (email:string, name:string, username:string) =>{
