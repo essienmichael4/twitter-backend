@@ -1,14 +1,15 @@
 import { Router } from "express";
 import { allTweets, createTweet, deleteTweet, getTweet, updateTweet } from "../models/tweetModel";
+import { AuthRequest } from "../types/reqType";
+
 
 const router = Router();
 
 // Create tweet
-router.post('/', async (req, res) => {
-    const {content, image, userId} = req.body
-    console.log({content, image, userId});
-    
-    const tweet = await createTweet(userId, content, image)
+router.post('/', async (req:AuthRequest, res) => {
+    const {content, image} = req.body
+    const user = req.user
+    const tweet = await createTweet(user!.id, content, image)
 
     res.send(tweet)
     // res.status(501).json({error: "Not implemented"})
