@@ -1,37 +1,18 @@
 import express from 'express'
+import userRoute from './routes/userRoutes'
+import tweetRoute from './routes/tweetRoutes'
+import authRoute from './routes/authRoutes'
+import { authenticateToken } from './middleware/authService'
 
 const app = express();
 
 app.use(express.json())
+app.use('/api/v1/user', authenticateToken, userRoute)
+app.use('/api/v1/tweet', authenticateToken, tweetRoute)
+app.use('/api/v1/auth', authRoute)
 
 app.get('/', (req, res) => {
     res.send("Hello world, My first server ever  with node is ready, Updated")
-})
-
-// Create user
-app.post('/user', (req, res) => {
-    res.status(501).json({error: "Not implemented"})
-})
-
-// Get single user
-app.get('/user/:id', (req, res) => {
-    const {id} = req.params;
-    res.status(501).json({error: `Not implemented`})
-})
-
-// Get all Users
-app.get('/user', (req, res) => {
-    res.status(501).json({error: "Not implemented"})
-})
-
-// Update Users
-app.put('/user/:id', (req, res) => {
-    res.status(501).json({error: "Not implemented"})
-})
-
-// Delete Users
-app.delete('/user/:id', (req, res) => {
-    res.status(501).json({error: "Not implemented"})
 })
 
 app.listen(3000, ()=>{
